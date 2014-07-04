@@ -1,24 +1,21 @@
 /* Created by frank on 14-7-4. */
 
-define(['jquery'], function ($) {
+(function ($) {
 
     var defaults = {
         prevClassName: '',
+        prevText: '',
         nextClassName: '',
+        nextText: '',
         duration: 150
     }
 
     $.fn.horizontalList = function (_options) {
 
         var $list = this
-        var options
-        if (_options) {
-            options = $.extend({}, defaults, _options)
-            $list.data('horizontalListOptions', options)
-        } else {
-            options = $list.data('horizontalListOptions')
-        }
-
+        var options = $.extend({}, defaults, $list.data('horizontalListOptions'), _options)
+        $list.data('horizontalListOptions', options)
+        console.log(_options)
 
         var currentIndex = 0
         var initialized = $list.data('horizontalList')
@@ -33,9 +30,9 @@ define(['jquery'], function ($) {
             $view = this.wrap('<div class="hList_view"></div>').parent().css({'overflow': 'hidden'})
             $wrapper = $view.wrap('<div class="hList"></div>').parent().css({position: 'relative'})
             $prev = $('<span class="hList_control hList_control-prev" title="previous"></span>').appendTo($wrapper)
-                .on('selectstart', prevent)
+                .on('selectstart', prevent).text(options.prevText)
             $next = $('<span class="hList_control hList_control-next" title="next"></span>').appendTo($wrapper)
-                .on('selectstart', prevent)
+                .on('selectstart', prevent).text(options.nextText)
             $list.data('horizontalList', true)
 
             if (options.prevClassName) {
@@ -55,10 +52,16 @@ define(['jquery'], function ($) {
         var $items = this.children('li')
         var itemCount = $items.length
         if (itemCount === 0) {return}
+        var $firstItem = $items.eq(0)
+        var itemWidth = $firstItem.width() + 
+            parseInt($firstItem.css('marginLeft'),10) + 
+            parseInt($firstItem.css('marginRight'),10) +
+            parseInt($firstItem.css('borderLeftWidth'),10) +
+            parseInt($firstItem.css('borderRightWidth'),10)
 
-        this.width(itemCount * $items.eq(0).width())
+        this.width(itemCount * itemWidth)
 
-        var maxVisibleCount = parseInt($view.width() / $items.eq(0).width(), 10)
+        var maxVisibleCount = parseInt($view.width() / itemWidth, 10)
 
         step = maxVisibleCount - 1
 
@@ -93,7 +96,7 @@ define(['jquery'], function ($) {
                 $prev.show()
             }
 
-            $list.stop(true, true).animate({'left': -$items.eq(0).width() * currentIndex}, options.duration)
+            $list.stop(true, true).animate({'left': -itemWidth * currentIndex}, options.duration)
 
         }
 
@@ -103,5 +106,4 @@ define(['jquery'], function ($) {
 
     }
 
-    return $
-})
+}).call(this, jQuery)

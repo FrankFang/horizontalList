@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <style>
+        ul{ counter-reset:c; }
+        li{ counter-increment:c; }
+        li:before{ content:counter(c); }
+
+        body{text-align: center;}
+        *{margin:0; padding:0;}
+        #content{
+            width: 960px;
+            margin: 0 auto;
+        }
+        ul{list-style: none; text-align: center;}
+        li{
+            width: 280px;
+            margin: 0 20px;
+            height: 320px;
+            background: #DDD;
+            float:left;
+        }
+        .prev{float: left;}
+        .next{float: right;}
+    </style>
+</head>
+<body>
+    <div id="content">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <button onclick="addOne()">Add one item</button>
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="./jquery.horizontalList.js"></script>
+    <script>
+        $('ul').horizontalList({
+            prevText: 'prev',
+            prevClassName: 'prev',
+            nextText: 'next',
+            nextClassName: 'next'
+        })
+
+        function addOne(){
+            $('ul').append('<li></li>').horizontalList()
+        }
+    </script>
+</body>
+</html>
