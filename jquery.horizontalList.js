@@ -15,7 +15,6 @@
         var $list = this
         var options = $.extend({}, defaults, $list.data('horizontalListOptions'), _options)
         $list.data('horizontalListOptions', options)
-        console.log(_options)
 
         var currentIndex = 0
         var initialized = $list.data('horizontalList')
